@@ -34,4 +34,6 @@ if __name__ == '__main__':
             sleep(args.delay)
         except telegram.error as error:
             print(error)
+        except TypeError:  # if user put in 'images' non-photo file
+            pass
     
