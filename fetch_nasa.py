@@ -21,12 +21,10 @@ def get_daily(token):
     if isinstance(response, dict):
         if response['media_type'] == 'image':
             download_file(f'images/nasa/daily/{datetime.today().date()}', response['url'])
-        else:
-            raise FileNotFoundError
     elif isinstance(response, list):
         for content in response:
             if content['media_type'] == 'image':
-                download_file(f'images/nasa/daily/{datetime.today().date()}', content['url'])
+                download_file(f'images', content['url'])
 
 
 def get_epic(token):
@@ -39,7 +37,7 @@ def get_epic(token):
     for photo in tqdm(latest_epic_info.json()):
         date = '/'.join(photo['date'].split(' ')[0].split('-'))
         url = f'https://epic.gsfc.nasa.gov/archive/natural/{date}/png/{photo["image"]}.png'
-        download_file(f'images/nasa/epic/{photo["date"].split(" ")[0]}', url)
+        download_file(f'images', url)
 
 
 if __name__ == '__main__':
