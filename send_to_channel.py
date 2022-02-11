@@ -1,9 +1,8 @@
 import argparse
-from asyncio import exceptions
 import os
-from time import sleep
 
 from random import randint
+from time import sleep
 
 import telegram
 

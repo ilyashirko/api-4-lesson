@@ -4,8 +4,8 @@ from datetime import datetime
 
 import requests
 
-from tqdm import tqdm
 from dotenv import load_dotenv
+from tqdm import tqdm
 
 from main import download_file
 

@@ -1,4 +1,3 @@
-from asyncio import exceptions
 import requests
 
 from tqdm import tqdm
