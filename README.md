@@ -21,7 +21,8 @@ pip3 install -r requirements.txt
 4. get [NASA token](https://api.nasa.gov/) for downloading photos. It looks like `234251245ji1h245hg24h5b12j4h5b12hj45bj12h`
 6. create [telegram bot](https://t.me/BotFather), you will take special token for your bot. It looks like `78686876876:9sd8f7sd98sd7f98sd7f9s8d7f987s9d8f7`.
 7. create [telegram channel](https://web.telegram.org/k/), you will need its ID.
-8. create file `.env` in root folder of programm and write you tokens and ID there:
+8. make the bot a channel administrator in your channel settings
+9. create file `.env` in root folder of programm and write you tokens and ID there:
 ```
 NASA_TOKEN=234251245ji1h245hg24h5b12j4h5b12hj45bj12h
 TELEGRAM_BOT_TOKEN=78686876876:9sd8f7sd98sd7f98sd7f9s8d7f987s9d8f7
