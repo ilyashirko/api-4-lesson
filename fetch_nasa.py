@@ -20,7 +20,7 @@ def get_daily(token):
 
     if isinstance(response, dict):
         if response['media_type'] == 'image':
-            download_file(f'images/nasa/daily/{datetime.today().date()}', response['url'])
+            download_file(f'images', response['url'])
     elif isinstance(response, list):
         for content in response:
             if content['media_type'] == 'image':
