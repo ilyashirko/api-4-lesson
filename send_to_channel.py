@@ -31,8 +31,10 @@ if __name__ == '__main__':
         try:
             send_random_photo(bot, channel_id)
             sleep(args.delay)
-        except telegram.error as error:
-            print(error)
+        except telegram.error.NetworkError:
+            pass
+        except telegram.error.BadRequest:  # if too large photo
+            pass
         except TypeError:  # if user put in 'images' non-photo file
             pass
     
