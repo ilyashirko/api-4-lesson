@@ -3,6 +3,7 @@ import os
 import random
 
 from time import sleep
+from contextlib import suppress
 
 import telegram
 
@@ -37,12 +38,10 @@ if __name__ == '__main__':
     bot = telegram.Bot(token=telegram_bot_token)
 
     while True:
-        try:
+        with suppress(
+            telegram.error.NetworkError,
+            telegram.error.BadRequest,
+            TypeError
+        ):
             send_random_photo(bot, channel_id)
             sleep(args.delay)
-        except telegram.error.NetworkError:
-            pass
-        except telegram.error.BadRequest:  # if too large photo
-            pass
-        except TypeError:  # if user put in 'images' non-photo file
-            pass
