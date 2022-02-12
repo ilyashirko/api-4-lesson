@@ -1,7 +1,5 @@
 import os
 
-from datetime import datetime
-
 import requests
 
 from dotenv import load_dotenv
@@ -20,11 +18,11 @@ def get_daily(token):
 
     if isinstance(response, dict):
         if response['media_type'] == 'image':
-            download_file(f'images', response['url'])
+            download_file('images', response['url'])
     elif isinstance(response, list):
         for content in response:
             if content['media_type'] == 'image':
-                download_file(f'images', content['url'])
+                download_file('images', content['url'])
 
 
 def get_epic(token):
@@ -36,8 +34,9 @@ def get_epic(token):
 
     for photo in tqdm(latest_epic_info.json()):
         date = '/'.join(photo['date'].split(' ')[0].split('-'))
-        url = f'https://epic.gsfc.nasa.gov/archive/natural/{date}/png/{photo["image"]}.png'
-        download_file(f'images', url)
+        url = (f'https://epic.gsfc.nasa.gov/archive/natural/'
+               f'{date}/png/{photo["image"]}.png')
+        download_file('images', url)
 
 
 if __name__ == '__main__':
