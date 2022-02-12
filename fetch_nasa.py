@@ -1,11 +1,13 @@
 import os
 
+from urllib.parse import unquote, urlsplit
+
 import requests
 
 from dotenv import load_dotenv
 from tqdm import tqdm
 
-from files_processing import download_file
+from files_processing import download_file, PHOTOS_PATH
 
 
 def get_daily(token):
@@ -14,32 +16,43 @@ def get_daily(token):
 
     response = requests.get(url, params=params)
     response.raise_for_status()
-    response = response.json()
+    daily_data = response.json()
 
-    if isinstance(response, dict):
-        if response['media_type'] == 'image':
-            download_file('images', response['url'])
-    elif isinstance(response, list):
-        for content in response:
+    if isinstance(daily_data, dict):
+        if daily_data['media_type'] == 'image':
+            url = daily_data['url']
+            _, photo_name = os.path.split(unquote(urlsplit(url).path))
+            photo = f'{PHOTOS_PATH}/{photo_name}'
+            if not os.path.exists(photo):
+                download_file(photo, url)
+    elif isinstance(daily_data, list):
+        for content in tqdm(daily_data):
             if content['media_type'] == 'image':
-                download_file('images', content['url'])
+                url = content['url']
+                _, photo_name = os.path.split(unquote(urlsplit(url).path))
+                photo = f'{PHOTOS_PATH}/{photo_name}'
+                if not os.path.exists(photo):
+                    download_file(photo, url)
 
 
 def get_epic(token):
-    latest_epic_info = 'https://epic.gsfc.nasa.gov/api/natural'
+    url = 'https://epic.gsfc.nasa.gov/api/natural'
     params = {'api_key': token}
 
-    latest_epic_info = requests.get(latest_epic_info, params=params)
+    latest_epic_info = requests.get(url, params=params)
     latest_epic_info.raise_for_status()
 
     for photo in tqdm(latest_epic_info.json()):
         date = '/'.join(photo['date'].split(' ')[0].split('-'))
         url = (f'https://epic.gsfc.nasa.gov/archive/natural/'
                f'{date}/png/{photo["image"]}.png')
-        download_file('images', url)
+        photo = f'{PHOTOS_PATH}/{photo["image"]}.png'
+        if not os.path.exists(photo):
+            download_file(photo, url)
 
 
 if __name__ == '__main__':
+    os.makedirs(PHOTOS_PATH, exist_ok=True)
     load_dotenv()
     token = os.getenv('NASA_TOKEN')
 

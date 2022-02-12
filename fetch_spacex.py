@@ -1,30 +1,29 @@
+import os
+
+from urllib.parse import unquote, urlsplit
+from contextlib import suppress
+
 import requests
 
 from tqdm import tqdm
 
-from files_processing import download_file
+from files_processing import download_file, PHOTOS_PATH
 
 
-def get_latest_launch():
-    url = 'https://api.spacexdata.com/v4/launches/latest'
+def get_launches():
+    url = 'https://api.spacexdata.com/v4/launches'
     response = requests.get(url)
     response.raise_for_status()
-    return response.json()['flight_number']
-
-
-def get_photos(launch_num):
-    launch_url = f'https://api.spacexdata.com/v3/launches/{launch_num}'
-    response = requests.get(launch_url)
-    response.raise_for_status()
-    for url in tqdm(response.json()['links']['flickr_images']):
-        download_file('images/', url)
+    return response.json()
 
 
 if __name__ == '__main__':
-    latest_flight = get_latest_launch()
-    for flight_num in range(1, latest_flight + 1):
-        print(f'Checking {flight_num} flight...')
-        try:
-            get_photos(flight_num)
-        except requests.exceptions.HTTPError as error:
-            print(error)
+    os.makedirs(PHOTOS_PATH, exist_ok=True)
+    launches = get_launches()
+    for launch in launches:
+        with suppress(KeyError):
+            for url in tqdm(launch['links']['flickr']['original']):
+                _, photo_name = os.path.split(unquote(urlsplit(url).path))
+                photo = f'{PHOTOS_PATH}/{photo_name}'
+                if not os.path.exists(photo):
+                    download_file(photo, url)
