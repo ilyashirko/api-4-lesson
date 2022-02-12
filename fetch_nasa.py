@@ -5,7 +5,7 @@ import requests
 from dotenv import load_dotenv
 from tqdm import tqdm
 
-from main import download_file
+from files_processing import download_file
 
 
 def get_daily(token):
