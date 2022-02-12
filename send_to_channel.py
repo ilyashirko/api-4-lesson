@@ -1,7 +1,7 @@
 import argparse
 import os
+import random
 
-from random import randint
 from time import sleep
 
 import telegram
@@ -10,8 +10,7 @@ from dotenv import load_dotenv
 
 
 def send_random_photo(bot, channel_id):
-    photos = os.listdir('images')
-    photo = photos[randint(0, len(photos)-1)]
+    photo = random.choice(os.listdir('images'))
     with open(f'images/{photo}', 'rb') as photo:
         bot.send_photo(chat_id=channel_id, photo=photo)
         
