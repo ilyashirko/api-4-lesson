@@ -6,8 +6,8 @@ This programm fetch and send photos to telegram channel via telegram bot at the 
 ## install app
 1. clone repository and go to the root folder:
 ```
-$ git clone https://github.com/ilyashirko/api-4-lesson
-$ cd api-4-lesson
+$ git clone https://github.com/ilyashirko/space_photo_bot
+$ cd space_photo_bot
 ```
 2. activate virtual environment via venv or virtualenv, activate it:
 ```
